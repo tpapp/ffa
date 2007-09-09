@@ -119,3 +119,17 @@ it (change its value etc)."
 	 (copy-to-pointer (,original-array ,pointer ,cffi-type
 			   ,length ,index-offset ,direction)
 	       ,@body)))))
+
+(defmacro with-pointers-to-arrays (parameter-lists &body body)
+  "Same as with-pointer-to-array, but with multiple arrays, pointers,
+etc.  parameter-lists needs to be a list of lists."
+  (labels ((internal (plists)
+	     (let ((plist (car plists))
+		   (rest (cdr plists)))
+	       (unless (= (length plist) 5)
+		 (error "invalid parameter list(s)"))
+	       `(with-pointer-to-array ,plist
+		  ,@(if rest
+			(list (internal rest))
+			body)))))
+    (internal parameter-lists)))

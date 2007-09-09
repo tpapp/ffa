@@ -8,7 +8,7 @@ one-dimensional array.  element-type can be a cffi type, see
 *cffi-and-lisp-types*.  Array is filled with initial-element or
 initial-contents, coerced to the given type."
   (assert (or (atom dimensions) (and (listp dimensions) (car dimensions))))
-  (let* ((element-type (or (match-cffi-element-type element-type) element-type))
+  (let* ((element-type (or (match-array-element-type element-type) element-type))
 	 (dimensions (if (atom dimensions) (list dimensions) dimensions))
 	 (length (reduce #'* dimensions))
 	 (array (cond

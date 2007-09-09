@@ -15,4 +15,4 @@
 
    ;; pointer
 
-   with-pointer-to-array))
+   with-pointer-to-array with-pointers-to-arrays))
