@@ -1,6 +1,5 @@
 (defsystem ffa
   :description "Foreign frienldly arrays"
-  :version "0.1"
   :author "Tamas K Papp"
   :license "GPL"
   :components ((:file "package")

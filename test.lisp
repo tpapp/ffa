@@ -1,3 +1,5 @@
+(require :cl-numlib)
+
 (in-package :ffa)
 
 (defparameter *a* (make-array 19))
@@ -14,3 +16,19 @@
 
 (defparameter *b* (displace *a* '(4 4) 2))
 (defparameter *c* (displace *b* 7 3))
+
+
+;; elementwise operations
+
+
+(defparameter *a* (cl-numlib:num-sequence :from 0 :to 8 :by 1))
+(defparameter *b* (cl-numlib:num-sequence :from 8 :to 0 :by -1))
+(defparameter *a-2d* (displace-array *a* '(3 3) 0))
+(defparameter *b-2d* (displace-array *b* '(3 3) 0))
+(array+ *a* *b*)
+(array+ *a-2d* *b-2d*)
+
+(copy-array *a-2d*)
+
+(array-map #'(lambda (x) (coerce (* 2 x) 'single-float)) *a-2d* 'single-float)
+

@@ -64,3 +64,37 @@ specified, element-type will be the element-type of x."
       (dotimes (j y-length)
 	(setf (aref result i j) (funcall function (aref x i) (aref y j)))))
     result))
+
+(defun array-elementwise-operation (operator a b element-type)
+  "Apply a bivariate operator on two arrays of the same dimension
+elementwise, returning the resulting array, which has the given
+element-type."
+  (let ((dimensions (array-dimensions a)))
+    (assert (equal dimensions (array-dimensions b)))
+    (bind (((values a-flat a-index-offset length)
+	    (find-or-displace-to-flat-array a))
+	   ((values b-flat b-index-offset)
+	    (find-or-displace-to-flat-array b))
+	   (result (make-ffa dimensions element-type))
+	   (result-flat (find-original-array result)))
+      (iter
+	(for index :from 0 :below length)
+	(for a-index :from a-index-offset)
+	(for b-index :from b-index-offset)
+	(setf (aref result-flat index)
+	      (funcall operator
+		       (aref a-flat a-index)
+		       (aref b-flat b-index))))
+      result)))
+
+(defun array+ (a b &optional (element-type :double))
+  (array-elementwise-operation #'+ a b element-type))
+(defun array- (a b &optional (element-type :double))
+  (array-elementwise-operation #'- a b element-type))
+(defun array* (a b &optional (element-type :double))
+  (array-elementwise-operation #'* a b element-type))
+(defun array/ (a b &optional (element-type :double))
+  (array-elementwise-operation #'/ a b element-type))
+
+
+

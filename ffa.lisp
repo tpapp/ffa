@@ -69,3 +69,33 @@ length.  Useful for passing to reduce etc."
 	(values original-array index-offset total-size)
 	(values (displace-array original-array total-size index-offset)
 		0 total-size))))
+
+(defun array-copy (array)
+  "Copy the elements of array.  Does not copy the elements itself
+recursively, if you need that, use array-map."
+  (make-ffa (array-dimensions array)
+	    (array-element-type array)
+	    :initial-contents (find-or-displace-to-flat-array array)))
+
+(defun array-map (function array 
+		  &optional (element-type (array-element-type array)))
+  "Map an array into another one elementwise using function.  The
+resulting array has the given element-type."
+  (bind ((result (make-ffa (array-dimensions array) element-type))
+	 (result-flat (find-original-array result))
+	 ((values array-flat index-offset length)
+	  (find-or-displace-to-flat-array array)))
+    (iter
+      (for result-index :from 0 :below length)
+      (for array-index :from index-offset)
+      (setf (aref result-flat result-index)
+	    (funcall function (aref array-flat array-index))))
+    result))
+
+(defun array-convert (element-type array)
+  "Convert array to desired element type.  Always makes a copy, even
+if no conversion is required."
+  (let ((element-type (or element-type (match-array-element-type element-type))))
+    (if (equal (array-element-type array) element-type)
+	(array-copy array)
+	(array-map #'(lambda (x) (coerce x element-type)) array element-type))))

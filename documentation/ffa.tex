@@ -156,7 +156,19 @@ functions \lstinline!array-max!, \lstinline!array-min!,
 \lstinline!array-sum!, \lstinline!array-product!,
 \lstinline!array-count! and \lstinline!array-range! --- see the
 functions for details.  You can get a generalized outer product using
-\lstinline!outer-product!.
+\lstinline!outer-product!.  See the source code for more useful
+operations.
+
+You can make a copy of an array using \lstinline!array-copy!, which,
+however, does not descend into the elements (eg if you are using this
+array to store lists, the elements of the new array will reference the
+same lists as the elements in the old one).  You can also map arrays
+(elementwise) into arrays of the same dimensions (but not necessarily
+the same element-type) with \lstinline!array-map!, which you can also
+use for a deep copy with the appropriate function.  The function
+\lstinline!array-convert! is a specialized version of
+\lstinline!array-map!, converting array elements using
+\lstinline!coerce!.
 
 
 \section{with-pointer-to-array}
@@ -206,6 +218,18 @@ SBCL, a warning is issued.
     (cffi-fill-int32 pp 7))
   a) ; =>  #2A((0 0 0 0 1 2 3 4 5) (6 0 0 0 0 0 0 0 0)))
 \end{lstlisting}
+
+If frequently happens that you have to pass more than one array to a
+foreign function.  For those cases, you can use the convenience macro
+
+\begin{lstlisting}
+(with-pointers-to-arrays ((a a-pointer a-type a-length a-dir)
+                             (b b-pointer b-type b-length b-dir)
+                             ...)
+   ...body...)
+\end{lstlisting}
+which expands into nested calls of \lstinline!with-pointer-to-array!
+using the given parameters.
 
 \end{document}
 
