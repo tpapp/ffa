@@ -59,10 +59,14 @@ from the original array."
 		:displaced-to original-array
 		:displaced-index-offset (+ sum-of-offsets index-offset))))
 
+(defun flatten-array (array)
+  "Return a flat (ie rank 1) displaced version of the array."
+  (displace-array array (array-total-size array) 0))
+  
 (defun find-or-displace-to-flat-array (array)
   "Find a flat array that array is displaced to, or create one that is
 displaced to the original array.  Also return the index-offset and
-length.  Useful for passing to reduce etc."
+length (total size).  Useful for passing to reduce etc."
   (bind ((total-size (array-total-size array))
 	 ((values original-array index-offset) (find-original-array array)))
     (if (= (array-rank original-array) 1)
@@ -91,6 +95,12 @@ resulting array has the given element-type."
       (setf (aref result-flat result-index)
 	    (funcall function (aref array-flat array-index))))
     result))
+
+(defun array-map! (function array)
+  "Replace each element 'elt' of an array with (funcall function elt),
+and return the modified array."
+  (dotimes (i (length array) array)
+    (setf (aref array i) (funcall function (aref array i)))))
 
 (defun array-convert (element-type array)
   "Convert array to desired element type.  Always makes a copy, even

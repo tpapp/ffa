@@ -1,5 +1,10 @@
+(defpackage #:ffa-asd
+  (:use :cl :asdf))
+
+(in-package :ffa-asd)
+
 (defsystem ffa
-  :description "Foreign frienldly arrays"
+  :description "Foreign friendly arrays"
   :author "Tamas K Papp"
   :license "GPL"
   :components ((:file "package")

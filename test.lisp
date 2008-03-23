@@ -32,3 +32,7 @@
 
 (array-map #'(lambda (x) (coerce (* 2 x) 'single-float)) *a-2d* 'single-float)
 
+;; array-map-list, array-map-values
+(array-map-list #'(lambda (x) (multiple-value-list (round x))) #(1.4 1.7) 2)
+(array-map-values #'round #(1.4 1.7) 2)
+(defparameter *p* (array-map-values #'round #2A((0.1 0.2) (0.7 0.9)) 2))

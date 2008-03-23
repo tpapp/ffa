@@ -88,19 +88,19 @@ it (change its value etc)."
   (assert (symbolp pointer))
   (once-only (array cffi-type direction)
     (with-unique-names (original-array index-offset lisp-type)
-      `(bind (((values ,original-array ,index-offset) 
+      `(bind (((:values ,original-array ,index-offset) 
 	       (find-original-array ,array))
 	      (,lisp-type (array-element-type ,original-array)))
 	 (assert (valid-direction-p ,direction))
 	 (cond
 	   ((and (typep ,original-array '(simple-array * (*)))
 		 ,lisp-type 		; no nil arrays
-		 (eq ,lisp-type (match-array-element-type ,cffi-type)))
+		 (equal ,lisp-type (match-array-element-type ,cffi-type)))
 	    (pin-to-pointer (,original-array ,pointer ,cffi-type
 			     ,length ,index-offset)
 	      ,@body))
 	   (t
-	    (warn "efficiency warning: array is copied and/or coerced")
+	    (warn "array is copied and/or coerced, lisp type is ~a, requested CFFI type is ~a" ,lisp-type ,cffi-type)
 	    (copy-to-pointer (,original-array ,pointer ,cffi-type
 			      ,length ,index-offset ,direction)
 	       ,@body)))))))
@@ -113,7 +113,7 @@ it (change its value etc)."
   (assert (symbolp pointer))
   (once-only (array cffi-type)
     (with-unique-names (original-array index-offset)
-      `(bind (((values ,original-array ,index-offset) 
+      `(bind (((:values ,original-array ,index-offset) 
 	       (find-original-array ,array)))
 	 (assert (valid-direction-p ,direction))
 	 (copy-to-pointer (,original-array ,pointer ,cffi-type
