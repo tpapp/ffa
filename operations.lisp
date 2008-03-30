@@ -16,7 +16,7 @@ when calling reduce."
   "Apply (reduce function ...) to the flattened array.  If
 ignore-nil-p is given, it behaves as if nil elements were removed from
 the array."
-  (bind (((values flat-array start length) (find-or-displace-to-flat-array array))
+  (bind (((:values flat-array start length) (find-or-displace-to-flat-array array))
 	 (end (+ start length)))
     (if ignore-nil-p
 	(reduce (ignoring-nil function)
@@ -87,9 +87,9 @@ elementwise, returning the resulting array, which has the given
 element-type."
   (let ((dimensions (array-dimensions a)))
     (assert (equal dimensions (array-dimensions b)))
-    (bind (((values a-flat a-index-offset length)
+    (bind (((:values a-flat a-index-offset length)
 	    (find-or-displace-to-flat-array a))
-	   ((values b-flat b-index-offset)
+	   ((:values b-flat b-index-offset)
 	    (find-or-displace-to-flat-array b))
 	   (result (make-ffa dimensions element-type))
 	   (result-flat (find-original-array result)))
@@ -214,7 +214,7 @@ Examples:
 
  (array-extrema #2A((2 1) (3 1) (2 3))) => 3, (5 2)
 "
-  (bind (((values flat-array index-offset total-size)
+  (bind (((:values flat-array index-offset total-size)
 	  (find-or-displace-to-flat-array array)))
     (index-extrema total-size 
 		    (lambda (i)
