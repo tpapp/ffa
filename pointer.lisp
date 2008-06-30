@@ -6,7 +6,7 @@
   "Copy length elements from array (starting at index-offset) of type
 lisp-type to the memory area that starts at pointer, coercing the
 elements if necessary."
-  (let ((matching-lisp-type (match-array-element-type cffi-type)))
+  (let ((matching-lisp-type (match-cffi-element-type cffi-type)))
     (unless matching-lisp-type
       (error "don't know how what array element type matches ~a" cffi-type))
     (if (equal matching-lisp-type lisp-type)
@@ -26,7 +26,7 @@ elements if necessary."
   "Copy length elements from array (starting at index-offset) of type
 lisp-type from the memory area that starts at pointer, coercing the
 elements if necessary."
-  (if (eq (match-array-element-type cffi-type) lisp-type)
+  (if (eq (match-cffi-element-type cffi-type) lisp-type)
       (iter				; no coercion
 	(for pointer-index :from 0 :below length)
 	(for array-index :from index-offset)
@@ -95,7 +95,7 @@ it (change its value etc)."
 	 (cond
 	   ((and (typep ,original-array '(simple-array * (*)))
 		 ,lisp-type 		; no nil arrays
-		 (equal ,lisp-type (match-array-element-type ,cffi-type)))
+		 (equal ,lisp-type (match-cffi-element-type ,cffi-type)))
 	    (pin-to-pointer (,original-array ,pointer ,cffi-type
 			     ,length ,index-offset)
 	      ,@body))

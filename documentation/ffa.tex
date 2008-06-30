@@ -49,6 +49,23 @@
 \author{Tam\'as K Papp (\url{tpapp@princeton.edu})}
 \maketitle
 
+\section{IMPORTANT}
+\label{sec:important}
+
+As of June 28, 2008, all functions that do not involve FFI have been
+reorganized into the \verb!array-operations! package.  If you are
+loading \verb!ffa!, it will automatically load
+\verb!array-operations!.  If you were using the symbols for \verb!ffa!
+function names in the namespace of your package or \verb!cl-user!, you
+will need to do the same with \verb!array-operations!.  No other
+changes are necessary.
+
+The reason for the reorganization is that I realized that most array
+operations in this package have uses independent of FFI, and wanted to
+make them available in a package with fewer dependencies.
+
+I will keep the documentation unified for the two packages.
+
 \section{Introduction}
 \label{sec:motivation}
 
