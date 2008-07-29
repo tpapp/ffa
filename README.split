@@ -1,0 +1,8 @@
+Note: as of July 2008, I have split the part of the FFA package that does
+not use CFFI into a separate package, ARRAY-OPERATIONS.
+
+Loading FFA will automatically load ARRAY-OPERATIONS, but if you are
+importing array manipulating functions into the namespace of your package,
+you need to use ARRAY-OPERATIONS too.
+
+Tamas Papp <tpapp@princeton.edu>
