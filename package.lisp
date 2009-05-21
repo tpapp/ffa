@@ -1,7 +1,13 @@
+(in-package #:ffa-asd)
+
 (defpackage :ffa
-  (:use :common-lisp :cl-utilities :bind :iterate :array-operations)
+  (:use :common-lisp :cl-utilities :bind :iterate)
   (:shadowing-import-from :iterate :collecting :collect)
   (:export 
+
+   ;; types
+
+   elt-type 
 
    ;; pointer
 

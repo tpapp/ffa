@@ -7,7 +7,10 @@
   :description "Foreign friendly arrays"
   :author "Tamas K Papp"
   :license "GPL"
+  :serial t
   :components ((:file "package")
-	       (:file "pointer" :depends-on ("package")))
-  :depends-on (:cffi :cl-utilities :metabang-bind :iterate :array-operations))
+	       (:file "types")
+	       (:file "utils")
+	       (:file "pointer"))
+  :depends-on (:cffi :cl-utilities :metabang-bind :iterate))
 
