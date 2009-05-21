@@ -6,7 +6,7 @@
 (defsystem ffa
   :description "Foreign friendly arrays"
   :author "Tamas K Papp"
-  :license "GPL"
+  :license "LLGPL"
   :serial t
   :components ((:file "package")
 	       (:file "types")
